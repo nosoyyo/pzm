@@ -1,5 +1,8 @@
 # PZM - 拼字幕
+(some awesome badges here. use your illusion!)
+
 快速拼接电影截图字幕的命令行工具
+
 ![PinZimu](https://github.com/nosoyyo/pzm/blob/master/pzm_title_500x200.png)
 
 ## Features | 特性
