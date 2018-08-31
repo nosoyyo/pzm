@@ -8,7 +8,6 @@
 # Created Time:  2018-08-29 17:23:50
 #############################################
 __author__ = 'nosoyyo'
-__doc__ = '使用说明详见 http://nosoyyo.github.io/pzm'
 __version__ = '0.0.3'
 
 import os
@@ -23,22 +22,52 @@ from hub import PinZimu
 
 def sniff() -> list:
     '''
-    判断当前目录及子目录下是否有图片
-    目前仅支持递归深度为 `1`
-    所以，图片要么在当前目录下，要么在一级子目录下
+    sniff the shits out
+    only support the recursive depth of 1 for the moment
+    so the pics will either be in cwd or subs
 
-    :return: a list of strings or a list of list of strings
+    :return: a list of `str` or a list of list of `str`
     '''
     # `os.walk` returns a list of tuples
+    # with first item always the name of the dir, a `str`
+    # then a list of sub-directories
+    # then a list of non-dir contents in cwd, usually files
     walk = list(os.walk(os.getcwd()))
-    walk = [x for y in walk for x in y]
-    folder = []
-    for item in walk:
-        if isinstance(item, list) or isinstance(item, tuple):
-            folder.extend(item)
-        else:
-            folder.append(item)
-    return folder
+    result = []
+
+    def getPic(files: list) -> list:
+        return [f for f in files if f.split('.')[-1] in PinZimu.legal]
+
+    cwd = getPic(walk[0][2])
+    result.append(cwd)
+    del walk[0]
+    if walk:
+        subd = [getPic(i[2]) for i in walk]
+        result.extend(subd)
+
+    print(f'\nfound {sum([len(i) for i in result])} pics\
+     in {len(result)} dirs.\n')
+    return result
+
+
+def splice(folder: list, start=None, height=None, end=None) -> np.ndarray:
+    folder.sort()
+    pic_height = Image.open(folder[0]).height
+    start = -int(pic_height * .2) or start
+    subtitle_height = int(pic_height * .1) or height
+    end = start + subtitle_height or end
+
+    thumbnail = PinZimu(Image.open(folder[0]))._ndarray[:end]
+    subtitles = [PinZimu(Image.open(p))._ndarray[start:end]
+                 for p in folder[1:]]
+
+    for i in range(len(subtitles)-1):
+        thumbnail = np.concatenate((thumbnail, subtitles[i]))
+
+    suffix = f".{folder[0].split('.')[-1]}"
+    PinZimu.save(thumbnail, os.getcwd().split('/')[-1]+suffix)
+
+    return f'{len(folder)} -> 1 done.'
 
 
 def main(*args, **kw):
@@ -54,36 +83,17 @@ def main(*args, **kw):
     '''
 
     folder = sniff()
-    pics = [f for f in folder if f.split('.')[-1] in PinZimu.legal]
 
     if not folder:
         return '\nno picture found. \nbye!\n'
 
     if not any([args, kw]):
         # TODO automatically get everything done
-        pass
+        for pics in folder:
+            splice(pics)
     # 简单的帮助文档
     elif 'help' in args or '?' in args:
         return __help__
-
-    folder.sort()
-    # 取第一张图片后缀，仅支持相同后缀
-    suffix = f".{folder[0].split('.')[-1]}"
-
-    # debug or `verbose`
-    print(f'start: {start}, height: {height}, end: {end}')
-
-    # 第一张图留全尸，如果有`end`则截去`end`以下部分
-    thumbnail = PinZimu(Image.open(folder[0]))._ndarray[:end]
-    # 其余只留下字幕部分
-    subtitles = [PinZimu(Image.open(p))._ndarray[start:end]
-                 for p in folder[1:]]
-
-    # 拼接矩阵
-    for i in range(len(subtitles)-1):
-        thumbnail = np.concatenate((thumbnail, subtitles[i]))
-    # 存到本地
-    PinZimu.save(thumbnail, os.getcwd().split('/')[-1]+suffix)
 
 
 def entry():

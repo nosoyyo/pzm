@@ -35,14 +35,20 @@ pulp fiction
 - 手动测量字幕起始位置&高度
 - 在存放截图的路径里运行 
 
-        pulp fiction$ pzm <start> <end>
+        pulp fiction$ pzm [start] [height] [end]
 
         参数
-        :start: 字幕区域相对底边的起始位置
-        :end: 字幕区域相对底边的结束位置
+        [start]   字幕区域相对底边的起始位置
+        [height]  字幕区高度
+        [end]     字幕区域相对底边的结束位置
 - 例如
 
-        pzm -200 -100
+        pzm --start -200 --end -100
+- 若省略 `flag`，仅使用数字参数，则将按照 `start`、`height`、`end` 的顺序解析
+
+        pzm -200 200
+        将被解析为
+        pzm --start -200 --height 200
 - 最后生成长图上的字幕顺序和文件夹里的图片排序相同
 
 ### Windows Users Workflow | Windows 用户工作流
@@ -51,6 +57,7 @@ pulp fiction
 
 ### Tips
 - 所有图片必须大小相同、图片格式相同（正常情况下连续截全屏就可以）
+- 给存放图片的目录起一个简单的英文名字会方便许多
 - 目录里可以有其他非图片文件，将自动忽略
 - 建议留出 15% 左右的 bleeding
 
