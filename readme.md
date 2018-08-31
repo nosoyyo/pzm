@@ -1,5 +1,5 @@
 # PZM - 拼字幕
-!(pzm_title_500x200.png)
+!(/pzm_title_500x200.png)
 
 ## Features | 特性
 - 快速拼接电影截图字幕
@@ -31,10 +31,8 @@
 - 在存放截图的目录里运行 
 
         pzm <start> <end>
-
-- `:start:` 字幕区域起始位置
-
-- `:end:` 字幕区域结束位置
+        :start: 字幕区域起始位置
+        :end: 字幕区域结束位置
 - 例如
 
         pzm -200 -100
@@ -55,8 +53,8 @@
 
 ## License | 开源协议
 
-![http://www.wtfpl.net/]("http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png")
+![WTFPL](http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png)
 
 ## Author | 作者
 
-[nosoyyo](https://www.zhihu.com/people/paulcarino)
+[nosoyyo](https://www.zhihu.com/people/paulcarino)
