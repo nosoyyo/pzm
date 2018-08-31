@@ -1,9 +1,10 @@
 # PZM - 拼字幕
-!(/pzm_title_500x200.png)
+快速拼接电影截图字幕的命令行工具
+![PinZimu](https://github.com/nosoyyo/pzm/blob/master/pzm_title_500x200.png)
 
 ## Features | 特性
-- 快速拼接电影截图字幕
-- 目前是半自动操作，但仍省去大量重复劳动
+
+- 将纯手动提升为半自动操作，可省去大量重复劳动
 - 与传统方式相比，效率提升 500%+
 - 正在向全自动迭代
 
