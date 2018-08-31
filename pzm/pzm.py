@@ -14,116 +14,61 @@ __version__ = '0.0.3'
 import os
 import fire
 import time
-import uuid
 import numpy as np
 from PIL import Image
 
-
-class PinZimu():
-    legal = ['jpg', 'jpeg', 'png', 'gif', ]
-
-    def __init__(self, _input):
-        '''
-        :param: `_input` file.read?
-        '''
-        self.image = self.convert(_input, to='PIL.Image')
-        self._ndarray = self.convert(_input, to='np.ndarray')
-
-    @classmethod
-    def convert(self, _input, to='PIL.Image'):
-        try:
-            output = 'not ready yet'
-            if isinstance(_input, np.ndarray):
-                hub = Image.fromarray(_input)
-            elif isinstance(_input, str) and os.path.isfile(_input):
-                hub = Image.open(_input)
-            elif isinstance(_input, Image.Image):
-                hub = _input
-            elif isinstance(_input, tuple):
-                hub = Image.fromarray(_input)
-
-            if not hub:
-                return '_input not converted'
-            elif to == 'PIL.Image':
-                output = hub
-            elif to == 'np.ndarray':
-                output = np.array(hub)
-            return output
-        except Exception as e:
-            print(e)
-
-    @classmethod
-    def look(self, _input):
-        '''
-        Use this for debugging.
-        '''
-        self.convert(_input, to='PIL.Image').show()
-
-    @classmethod
-    def save(self, _input, filename: str=None, format='jpeg') -> str:
-        _input = self.convert(_input, to='PIL.Image')
-
-        def makeFilename(format='jpeg'):
-            if format in ['jpg', 'jpeg']:
-                suffix = '.jpeg'
-            elif format is 'png':
-                suffix = '.png'
-            return uuid.uuid4().__str__() + suffix
-
-        if not filename:
-            filename = 'var/tmp/' + makeFilename(format=format)
-
-        _input.save(filename)
-        return filename
+from doc import __help__
+from hub import PinZimu
 
 
-def main(start=None, end=None, height=None):
+def sniff() -> list:
     '''
+    判断当前目录及子目录下是否有图片
+    目前仅支持递归深度为 `1`
+    所以，图片要么在当前目录下，要么在一级子目录下
+
+    :return: a list of strings or a list of list of strings
+    '''
+    # `os.walk` returns a list of tuples
+    walk = list(os.walk(os.getcwd()))
+    walk = [x for y in walk for x in y]
+    folder = []
+    for item in walk:
+        if isinstance(item, list) or isinstance(item, tuple):
+            folder.extend(item)
+        else:
+            folder.append(item)
+    return folder
+
+
+def main(*args, **kw):
+    '''
+    :param: <None> 默认自动处理当前目录下全部子目录，默认字幕位置`-20%`, 高度`10%`
+    :param: <folder name> 处理当前目录下某个子目录
+
     :param: `start` 图片从下往上开始截取的相对位置，例如`-200`
     :param: `end` 截到哪为止，例如`-100`
     :param: `height` 截取多高
 
-    :TODO: `start` 和 `end` 如果为正，则按绝对定位截取
+    :TODO: `start` 和 `end` 如果为正，则按绝对定位截取；否则相对
     '''
-    __help__ = '''
-Usage:
-  pzm <start> [end] [height]
 
-Options:
-  start                       Must indicate where to start.
-  end                         Indicate where to end.
-  height                      If `end` is specified, `height` will be ignored.
+    folder = sniff()
+    pics = [f for f in folder if f.split('.')[-1] in PinZimu.legal]
 
-Example:
-  pzm -200 -100
-  pzm --start -200 --end -100
-  pzm -200 --height 100
+    if not folder:
+        return '\nno picture found. \nbye!\n'
 
-                '''
-
+    if not any([args, kw]):
+        # TODO automatically get everything done
+        pass
     # 简单的帮助文档
-    if not any([start, end, height]):
+    elif 'help' in args or '?' in args:
         return __help__
 
-    # 需要指明开始处
-    if not start:
-        return '\nNeed `start`.\n'
-
-    # 判断当前目录里是否有图片
-    folder = [f for f in os.listdir() if f.split('.')[-1] in PinZimu.legal]
-    if not folder:
-        return '\nNo picture found in this folder.\n'
     folder.sort()
     # 取第一张图片后缀，仅支持相同后缀
     suffix = f".{folder[0].split('.')[-1]}"
-
-    # 需要指明停止处或高度
-    if end:
-        height = abs(start - end)
-    elif height:
-        end = start + height
-    else:
-        return '\nNeed `height` or `end`.\n'
 
     # debug or `verbose`
     print(f'start: {start}, height: {height}, end: {end}')
