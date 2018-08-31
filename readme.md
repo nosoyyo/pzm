@@ -27,6 +27,7 @@
 
 #### 例如
 ```
+pulp fiction
 ├── Screen Shot 2018-08-28 at 3.42.52 PM.png
 ├── Screen Shot 2018-08-28 at 3.42.54 PM.png
 └── Screen Shot 2018-08-28 at 3.43.01 PM.png
@@ -34,9 +35,11 @@
 - 手动测量字幕起始位置&高度
 - 在存放截图的路径里运行 
 
-        pzm <start> <end>
-        :start: 字幕区域起始位置
-        :end: 字幕区域结束位置
+        pulp fiction$ pzm <start> <end>
+
+        参数
+        :start: 字幕区域相对底边的起始位置
+        :end: 字幕区域相对底边的结束位置
 - 例如
 
         pzm -200 -100
