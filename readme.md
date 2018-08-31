@@ -1,5 +1,7 @@
 # PZM - 拼字幕
-(some awesome badges here. use your illusion!)
+![](https://img.shields.io/pypi/pyversions/Django.svg?maxAge=2592000)
+[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/nosoyyo)
+
 
 快速拼接电影截图字幕的命令行工具
 
@@ -61,4 +63,4 @@
 
 ## Author | 作者
 
-[nosoyyo](https://www.zhihu.com/people/paulcarino)
+[nosoyyo]()
