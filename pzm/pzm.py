@@ -16,58 +16,78 @@ import time
 import numpy as np
 from PIL import Image
 
-from doc import __help__
-from hub import PinZimu
+from .doc import __help__
+from .hub import ImageHub
 
 
-def sniff() -> list:
-    '''
-    sniff the shits out
-    only support the recursive depth of 1 for the moment
-    so the pics will either be in cwd or subs
+class PinZimu():
 
-    :return: a list of `str` or a list of list of `str`
-    '''
-    # `os.walk` returns a list of tuples
-    # with first item always the name of the dir, a `str`
-    # then a list of sub-directories
-    # then a list of non-dir contents in cwd, usually files
-    walk = list(os.walk(os.getcwd()))
-    result = []
+    def sniff() -> list:
+        '''
+        sniff the shits out
+        only support the recursive depth of 1 for the moment
+        so the pics will either be in cwd or subs
 
-    def getPic(files: list) -> list:
-        return [f for f in files if f.split('.')[-1] in PinZimu.legal]
+        :return: a list of `str` or a list of list of `str`
+        '''
+        # `os.walk` returns a list of tuples
+        # with first item always the name of the dir, a `str`
+        # then a list of sub-directories
+        # then a list of non-dir contents in cwd, usually files
+        walk = list(os.walk(os.getcwd()))
+        result = []
 
-    cwd = getPic(walk[0][2])
-    result.append(cwd)
-    del walk[0]
-    if walk:
-        subd = [getPic(i[2]) for i in walk]
-        result.extend(subd)
+        def getPic(haslet: tuple) -> list:
+            result = [haslet[0]]
+            result.append(
+                [f for f in haslet[2] if f.split('.')[-1] in ImageHub.legal])
+            return result
 
-    print(f'\nfound {sum([len(i) for i in result])} pics\
-     in {len(result)} dirs.\n')
-    return result
+        cwd = getPic(walk[0])
+        result.append(cwd)
+        del walk[0]
+        if walk:
+            subd = [getPic(i) for i in walk if getPic(i)[1]]
+            result.extend(subd)
 
+        print(f'\nfound {sum([len(i[1]) for i in result])} pics \
+        in {len(result)} dirs.\n')
+        return [i for i in result if i]
 
-def splice(folder: list, start=None, height=None, end=None) -> np.ndarray:
-    folder.sort()
-    pic_height = Image.open(folder[0]).height
-    start = -int(pic_height * .2) or start
-    subtitle_height = int(pic_height * .1) or height
-    end = start + subtitle_height or end
+    def splice(folder: list,
+               cwd: str,
+               start=None,
+               height=None,
+               end=None) -> np.ndarray:
+        '''
+        '''
 
-    thumbnail = PinZimu(Image.open(folder[0]))._ndarray[:end]
-    subtitles = [PinZimu(Image.open(p))._ndarray[start:end]
-                 for p in folder[1:]]
+        os.chdir(folder[0])
 
-    for i in range(len(subtitles)-1):
-        thumbnail = np.concatenate((thumbnail, subtitles[i]))
+        pics = folder[1]
+        pics.sort()
+        pic_height = Image.open(pics[0]).height
+        start = -int(pic_height * .2) or start
+        subtitle_height = int(pic_height * .1) or height
+        end = start + subtitle_height or end
 
-    suffix = f".{folder[0].split('.')[-1]}"
-    PinZimu.save(thumbnail, os.getcwd().split('/')[-1]+suffix)
+        thumbnail = ImageHub(Image.open(pics[0]))._ndarray[:end]
+        subtitles = [ImageHub(Image.open(pic))._ndarray[start:end]
+                     for pic in pics[1:]]
 
-    return f'{len(folder)} -> 1 done.'
+        try:
+            for i in range(len(subtitles)-1):
+                thumbnail = np.concatenate((thumbnail, subtitles[i]))
+        except Exception:
+            print(Exception)
+
+        suffix = f".{pics[0].split('.')[-1]}"
+        ImageHub.save(thumbnail, os.getcwd().split('/')[-1]+suffix)
+
+        if os.getcwd != cwd:
+            os.chdir(cwd)
+
+        return f'{len(pics)} -> 1 done.'
 
 
 def main(*args, **kw):
@@ -81,16 +101,16 @@ def main(*args, **kw):
 
     :TODO: `start` 和 `end` 如果为正，则按绝对定位截取；否则相对
     '''
+    cwd = os.getcwd()
+    materials = PinZimu.sniff()
 
-    folder = sniff()
-
-    if not folder:
+    if not materials:
         return '\nno picture found. \nbye!\n'
 
     if not any([args, kw]):
         # TODO automatically get everything done
-        for pics in folder:
-            splice(pics)
+        for folder in materials:
+            PinZimu.splice(folder, cwd)
     # 简单的帮助文档
     elif 'help' in args or '?' in args:
         return __help__

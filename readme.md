@@ -9,14 +9,14 @@
 
 ## Features | 特性
 
-- 将纯手动提升为半自动操作，可省去大量重复劳动
-- 与传统方式相比，效率提升 500%+
-- 正在向全自动迭代
+- 🤖️ 将纯手动提升为半自动操作，可省去大量重复劳动
+- 🚀 与传统方式相比，效率提升 500%+
+- 💻 正在向全自动迭代
 
 ## Installation | 安装
     pip install pzm
 
-- PZM 目前仅在 Python 3.7 测试通过
+- ❕PZM 目前仅在 Python 3.7 测试通过
 
 ## Usage | 用法
 
@@ -66,12 +66,15 @@ pulp fiction
 
 ## #TODO
 
-- [ ] 写单元测试
+- [x] 写单元测试
+- [x] 自适应参数
+- [x] 递归处理子目录
+- ~~[ ] 测试 win 等其他平台~~
+- [ ] 为 Mac 优化
+- [ ] 为 Windows 优化
 - [ ] 制作演示视频
-- [ ] 自适应参数
 - [ ] 自动检测字幕位置&高度
-- [ ] 递归处理子目录
-- [ ] 其他平台测试
+- [ ] `--autoclean`   #risky!
 
 ## License | 开源协议
 
@@ -79,4 +82,4 @@ pulp fiction
 
 ## Author | 作者
 
-[nosoyyo]()
+[nosoyyo](https://www.zhihu.com/people/nosoyyo)

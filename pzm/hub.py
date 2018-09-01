@@ -4,7 +4,7 @@ import numpy as np
 from PIL import Image
 
 
-class PinZimu():
+class ImageHub():
     legal = ['jpg', 'jpeg', 'png', 'gif', ]
 
     def __init__(self, _input):
