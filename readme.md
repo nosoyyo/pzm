@@ -74,7 +74,8 @@ pulp fiction
 - [ ] 为 Windows 优化
 - [ ] 制作演示视频
 - [ ] 自动检测字幕位置&高度
-- [ ] `--autoclean`   #risky!
+- [ ] `--autoclean`   #`autoclean` 只在非`Desktop`文件夹里生效
+- [ ] `desktop`       #在`Desktop`也生效，⚠危险️
 
 ## License | 开源协议
 
