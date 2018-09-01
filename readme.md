@@ -61,9 +61,6 @@ pulp fiction
 - 目录里可以有其他非图片文件，将自动忽略
 - 建议留出 15% 左右的 bleeding
 
-## Contributing | 贡献代码
-欢迎。
-
 ## #TODO
 
 - [x] 写单元测试
