@@ -5,9 +5,9 @@ from setuptools import setup, find_packages
 
 setup(
     name="pzm",
-    version="0.0.3",
+    version="0.0.6",
     keywords=("splice", "movie", "subtitle"),
-    description="test pip module",
+    description="quickly splice subtitles",
     long_description="Splice the movie screen captures with subtitle into an\
      elegant long picture.",
     license="WTFPL",
