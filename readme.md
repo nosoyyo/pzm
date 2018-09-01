@@ -66,13 +66,13 @@ pulp fiction
 - [x] 写单元测试
 - [x] 自适应参数
 - [x] 递归处理子目录
-- ~~[ ] 测试 win 等其他平台~~
+- [ ] ~~测试 win 等其他平台~~
 - [ ] 为 Mac 优化
 - [ ] 为 Windows 优化
 - [ ] 制作演示视频
 - [ ] 自动检测字幕位置&高度
 - [ ] `--autoclean`   #`autoclean` 只在非`Desktop`文件夹里生效
-- [ ] `desktop`       #在`Desktop`也生效，⚠危险️
+- [ ] `--desktop`       #在`Desktop`也生效，⚠危险️
 
 ## License | 开源协议
 
