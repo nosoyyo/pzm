@@ -20,7 +20,7 @@
 ## Installation | 安装
     pip install pzm
 
-- ❕PZM 目前仅在 Python 3.7 测试通过
+❕PZM 目前仅在 Python 3.7 测试通过
 
 ## Usage | 用法
 
@@ -29,7 +29,6 @@
 - 按住 ⌘Command 和 ⇧Shift，并在字幕变化的时候按下 `3`
 - 将需要生成一张长图的所有截图放入同一个文件夹
 
-#### 例如
 ```
 pulp fiction
 ├── Screen Shot 2018-08-28 at 3.42.52 PM.png
@@ -39,7 +38,7 @@ pulp fiction
 - 手动测量字幕起始位置&高度
 - 在存放截图的路径里运行 
 
-        pulp fiction$ pzm [start] [height] [end]
+        MacBook-Air:pulp fiction$ pzm [start] [height] [end]
 
         参数
         [start]   字幕区域相对底边的起始位置

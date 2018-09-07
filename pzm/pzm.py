@@ -13,11 +13,21 @@ __version__ = '0.0.3'
 import os
 import fire
 import time
+import platform
 import numpy as np
 from PIL import Image
 
 from .doc import __help__
 from .hub import ImageHub
+
+
+# TODO
+if any(platform.mac_ver()):
+    print(f'MacOS {platform.mac_ver()[0]}')
+elif any(platform.win32_ver()):
+    print(f'Windows {platform.win32_ver()[0]}')
+else:
+    pass
 
 
 class PinZimu():
