@@ -14,6 +14,7 @@ import os
 import fire
 import time
 import platform
+import threading
 import numpy as np
 from PIL import Image
 
@@ -88,8 +89,10 @@ class PinZimu():
         try:
             for i in range(len(subtitles)-1):
                 thumbnail = np.concatenate((thumbnail, subtitles[i]))
-        except Exception:
-            print(Exception)
+        except Exception as e:
+            print(e)
+
+        print('thread %s is running...' % threading.current_thread().name)
 
         suffix = f".{pics[0].split('.')[-1]}"
         ImageHub.save(thumbnail, os.getcwd().split('/')[-1]+suffix)
@@ -134,4 +137,4 @@ if __name__ == '__main__':
     time0 = time.time()
     fire.Fire(main)
     time1 = time.time()
-    print(f':2.{time1 - time0} seconds.')
+    print(f'{time1 - time0:.2} seconds.')
