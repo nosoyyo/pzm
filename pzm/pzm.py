@@ -50,8 +50,10 @@ class PinZimu():
 
         def getPic(haslet: tuple) -> list:
             result = [haslet[0]]
-            result.append(
-                [f for f in haslet[2] if f.split('.')[-1] in ImageHub.legal])
+            temp = [f for f in haslet[2] if f.split('.')[-1] in ImageHub.legal]
+            temp = [f for f in temp if f.split(
+                ' ')[0] in ImageHub.legal or f[:11] in ImageHub.legal]
+            result.append(temp)
             return result
 
         cwd = getPic(walk[0])

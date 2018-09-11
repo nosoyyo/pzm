@@ -5,7 +5,7 @@ from PIL import Image
 
 
 class ImageHub():
-    legal = ['jpg', 'jpeg', 'png', 'gif', ]
+    legal = ['jpg', 'jpeg', 'png', 'gif', '屏幕捕捉', 'Screen Shot',]
 
     def __init__(self, _input):
         '''
