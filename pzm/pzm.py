@@ -76,27 +76,45 @@ class PinZimu():
         '''
 
         os.chdir(folder[0])
-
         pics = folder[1]
         pics.sort()
+
+        # basic caculations
         pic_height = Image.open(pics[0]).height
         start = -int(pic_height * .2) or start
         subtitle_height = int(pic_height * .1) or height
         end = start + subtitle_height or end
 
-        thumbnail = ImageHub(Image.open(pics[0]))._ndarray[:end]
-        subtitles = [ImageHub(Image.open(pic))._ndarray[start:end]
-                     for pic in pics[1:]]
+        # the structure of grids
+        thumbnail_height = pic_height + start
+        final_height = thumbnail_height + abs(start - end) * (len(pics) - 1)
+        grids = [i for i in range(
+            thumbnail_height, final_height, subtitle_height)]
 
-        try:
-            for i in range(len(subtitles)-1):
-                thumbnail = np.concatenate((thumbnail, subtitles[i]))
-        except Exception as e:
-            print(e)
+        # cut the thumbnail then resize
+        thumbnail = ImageHub(Image.open(pics[0]))._ndarray[:end].copy()
+        thumbnail.resize(final_height, thumbnail.shape[1], thumbnail.shape[2])
+        # subtitles = [ImageHub(Image.open(pic))._ndarray[start:end]
+        #              for pic in pics[1:]]
 
-        print('thread %s is running...' % threading.current_thread().name)
+        # multithreading
+        def replace(thumbnail: np.ndarray, pic: str, grid: int) -> np.ndarray:
+            print(
+                f'0, thread {threading.current_thread()._ident} is running...')
+            matrix = ImageHub(Image.open(pic))._ndarray[start:end]
+            thumbnail[grid:grid + subtitle_height] = matrix
+            return thumbnail
 
-        suffix = f".{pics[0].split('.')[-1]}"
+        for grid in grids:
+            print(
+                f'1, thread {threading.current_thread()._ident} is running...')
+            pic = pics[grids.index(grid)]
+            t = threading.Thread(target=replace, args=(thumbnail, pic, grid)
+            t.start()
+
+        print(f'thread {threading.current_thread().name} ended.')
+
+        suffix=f".{pics[0].split('.')[-1]}"
         ImageHub.save(thumbnail, os.getcwd().split('/')[-1]+suffix)
 
         if os.getcwd != cwd:
@@ -116,8 +134,8 @@ def main(*args, **kw):
 
     :TODO: `start` 和 `end` 如果为正，则按绝对定位截取；否则相对
     '''
-    cwd = os.getcwd()
-    materials = PinZimu.sniff()
+    cwd=os.getcwd()
+    materials=PinZimu.sniff()
 
     if not materials:
         return '\nno picture found. \nbye!\n'
@@ -136,7 +154,7 @@ def entry():
 
 
 if __name__ == '__main__':
-    time0 = time.time()
+    time0=time.time()
     fire.Fire(main)
-    time1 = time.time()
+    time1=time.time()
     print(f'{time1 - time0:.2} seconds.')

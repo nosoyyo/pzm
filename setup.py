@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="pzm",
-    version="0.0.6",
+    version="0.0.7",
     keywords=("splice", "movie", "subtitle"),
     description="quickly splice subtitles",
     long_description="Splice the movie screen captures with subtitle into an\
@@ -21,7 +21,6 @@ setup(
     platforms="any",
     install_requires=['pillow', 'numpy', 'fire'],
 
-    # 此处起是增加的内容
     entry_points={
         'console_scripts': [
             'pzm=pzm.pzm:entry',
