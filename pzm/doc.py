@@ -1,4 +1,8 @@
 __help__ = '''
+PinZimu 0.0.7 (default, Sep 18 2018, 20:39:16)
+A simple tool for subtitles splicing of video captures.
+Any problems: https://github.com/nosoyyo/pzm/issues
+
 Usage:
   pzm <start> [end] [height]
 

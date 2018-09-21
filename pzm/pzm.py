@@ -71,10 +71,13 @@ class PinZimu():
                cwd: str,
                start=None,
                height=None,
-               end=None) -> np.ndarray:
+               end=None,
+               verbose=None) -> np.ndarray:
         '''
+        Worthy of an article to explain how this works.
         '''
 
+        t0 = time.time()
         os.chdir(folder[0])
         pics = folder[1]
         pics.sort()
@@ -97,22 +100,25 @@ class PinZimu():
         # subtitles = [ImageHub(Image.open(pic))._ndarray[start:end]
         #              for pic in pics[1:]]
 
-        # multithreading
+        # multi-threading
         def replace(thumbnail: np.ndarray, pic: str, grid: int) -> np.ndarray:
             print(
-                f'0, thread {threading.current_thread()._ident} is running...')
+                f'{threading.current_thread()._ident} is running...')
             matrix = ImageHub(Image.open(pic))._ndarray[start:end]
             thumbnail[grid:grid + subtitle_height] = matrix
             return thumbnail
 
         for grid in grids:
-            print(
-                f'1, thread {threading.current_thread()._ident} is running...')
+            if verbose:
+                print(
+                    f'{threading.current_thread().name} is running...')
             pic = pics[grids.index(grid)]
             t = threading.Thread(target=replace, args=(thumbnail, pic, grid))
             t.start()
 
-        print(f'thread {threading.current_thread().name} ended.')
+        if verbose:
+            print(f'{threading.current_thread().name} ended.')
+            print(f'{time.time()-t0:.2} seconds.')
 
         suffix = f".{pics[0].split('.')[-1]}"
         ImageHub.save(thumbnail, os.getcwd().split('/')[-1]+suffix)
