@@ -109,12 +109,12 @@ class PinZimu():
             print(
                 f'1, thread {threading.current_thread()._ident} is running...')
             pic = pics[grids.index(grid)]
-            t = threading.Thread(target=replace, args=(thumbnail, pic, grid)
+            t = threading.Thread(target=replace, args=(thumbnail, pic, grid))
             t.start()
 
         print(f'thread {threading.current_thread().name} ended.')
 
-        suffix=f".{pics[0].split('.')[-1]}"
+        suffix = f".{pics[0].split('.')[-1]}"
         ImageHub.save(thumbnail, os.getcwd().split('/')[-1]+suffix)
 
         if os.getcwd != cwd:
@@ -134,8 +134,8 @@ def main(*args, **kw):
 
     :TODO: `start` 和 `end` 如果为正，则按绝对定位截取；否则相对
     '''
-    cwd=os.getcwd()
-    materials=PinZimu.sniff()
+    cwd = os.getcwd()
+    materials = PinZimu.sniff()
 
     if not materials:
         return '\nno picture found. \nbye!\n'
@@ -154,7 +154,7 @@ def entry():
 
 
 if __name__ == '__main__':
-    time0=time.time()
+    time0 = time.time()
     fire.Fire(main)
-    time1=time.time()
+    time1 = time.time()
     print(f'{time1 - time0:.2} seconds.')
