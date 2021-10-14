@@ -1,4 +1,4 @@
-# PZM - 拼字幕
+# PZM - 拼字幕[deprecated]
 ![](https://img.shields.io/pypi/pyversions/Django.svg?maxAge=2592000)
 [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/nosoyyo)
 
